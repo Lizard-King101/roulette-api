@@ -17,6 +17,23 @@
 				],
 				"type": "number"
 			},
+			"UserExample": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Message": {
 				"properties": {
 					"id": {
@@ -27,12 +44,16 @@
 					},
 					"status": {
 						"$ref": "#/components/schemas/MessageStatus"
+					},
+					"from": {
+						"$ref": "#/components/schemas/UserExample"
 					}
 				},
 				"required": [
 					"id",
 					"message",
-					"status"
+					"status",
+					"from"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -90,6 +111,9 @@
 					}
 				},
 				"description": "Get a test message.",
+				"tags": [
+					"Messages"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -103,15 +127,25 @@
 				]
 			}
 		},
-		"/messages": {
+		"/messages/send": {
 			"post": {
 				"operationId": "SendMessage",
 				"responses": {
 					"201": {
-						"description": "Created"
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Message"
+								}
+							}
+						}
 					}
 				},
 				"description": "Send a test message. \nExample AuthToken: abc123456",
+				"tags": [
+					"Messages"
+				],
 				"security": [
 					{
 						"AuthToken": []

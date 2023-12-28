@@ -16,12 +16,22 @@ const models: TsoaRoute.Models = {
         "enums": [0,1,2,3],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserExample": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "name": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Message": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
             "message": {"dataType":"string","required":true},
             "status": {"ref":"MessageStatus","required":true},
+            "from": {"ref":"UserExample","required":true},
         },
         "additionalProperties": false,
     },
@@ -71,7 +81,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/messages',
+        app.post('/messages/send',
             authenticateMiddleware([{"AuthToken":[]}]),
             ...(fetchMiddlewares<RequestHandler>(MessageController)),
             ...(fetchMiddlewares<RequestHandler>(MessageController.prototype.sendMessage)),

@@ -17,7 +17,7 @@ export function expressAuthentication(
             // return auth data
             return Promise.resolve({
                 id: 1,
-                name: "Person",
+                name: "Guy",
             });
         } else {
             return Promise.reject(new Error('un authorized'));
