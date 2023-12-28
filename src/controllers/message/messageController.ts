@@ -30,11 +30,11 @@ export class MessageController extends Controller {
     }
 
     /**
-     * Send a test message. \n
+     * Send a test message. 
      * Example AuthToken: abc123456
      */
     @SuccessResponse("201", "Created") // Custom success response
-    @Security("authToken")
+    @Security("AuthToken")
     @Post()
     public async sendMessage(
         @Request() request: AuthRequest,

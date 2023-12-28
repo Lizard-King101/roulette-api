@@ -111,10 +111,10 @@
 						"description": "Created"
 					}
 				},
-				"description": "Send a test message. \\n\nExample AuthToken: abc123456",
+				"description": "Send a test message. \nExample AuthToken: abc123456",
 				"security": [
 					{
-						"authToken": []
+						"AuthToken": []
 					}
 				],
 				"parameters": [],
