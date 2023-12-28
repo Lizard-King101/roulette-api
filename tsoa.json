@@ -1,0 +1,22 @@
+{
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**/*Controller.ts"],
+  "spec": {
+    "outputDirectory": "src/routes",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "AuthToken": {
+        "type": "apiKey",
+        "name": "x-auth",
+        "in": "header",
+        "description": "User Auth Token"
+      }
+    },
+    "name": "Node Typescript Boilerplate"
+  },
+  "routes": {
+    "routesDir": "src/routes",
+    "authenticationModule": "src/modules/authentication.ts"
+  }
+}
