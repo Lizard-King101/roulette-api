@@ -26,13 +26,13 @@ export class MessageController extends Controller {
      */
     @Get("{messageId}")
     public async getMessage(
-        @Path() messageId: string,
+        @Path() messageId: string
     ): Promise<Message> {
         return new MessageService().get(messageId);
     }
 
     /**
-     * Send a test message. 
+     * Send a test message. <br>
      * Example AuthToken: abc123456
      */
     @SuccessResponse("201", "Created") // Custom success response
@@ -45,7 +45,7 @@ export class MessageController extends Controller {
         this.setStatus(201); // set return status 201
         console.log('endpoint', request.user);
     
-        
+
         return new MessageService().send(requestBody, request.user);
     }
 }

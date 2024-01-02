@@ -2,27 +2,31 @@ import express, { Request } from "express";
 import { UserExample } from "../types/user-example";
 
 export function expressAuthentication(
-    request: express.Request,
+    request: Request,
     securityName: string,
     scopes?: string[]
   ): Promise<UserExample> {
-    if (securityName === "AuthToken") {
-        let token;
-        if (request.headers["x-auth"]) {
-            token = request.headers["x-auth"];
+    return new Promise((resolve, reject) => {
+        if (securityName === "AuthToken") {
+            let token;
+            if (request.headers["x-auth"]) {
+                token = request.headers["x-auth"];
+            }
+        
+            // find authorization
+            if (token === "abc123456") {
+                // return auth data
+                return resolve({
+                    id: 1,
+                    name: "Guy",
+                });
+            } else {
+                return reject(new Error('Not Authorized'));
+            }
         }
-    
-        // find authorization
-        if (token === "abc123456") {
-            // return auth data
-            return Promise.resolve({
-                id: 1,
-                name: "Guy",
-            });
-        } else {
-            return Promise.reject(new Error('un authorized'));
-        }
-    } else return Promise.reject(new Error('un authorized'));
+        
+        return reject(new Error(`Missing Security '${securityName}'`));
+    })
 }
 
 export interface AuthRequest extends Request {

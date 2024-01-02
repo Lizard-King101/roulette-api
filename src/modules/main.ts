@@ -1,5 +1,10 @@
-import { Express, NextFunction, Request, Response } from 'express';
-import express from 'express';
+import express, {
+    Express,
+    Response as ExResponse,
+    Request as ExRequest,
+    NextFunction,
+} from "express";
+import { ValidateError } from "tsoa";
 import session from 'express-session';
 import Cors from 'cors';
 import http from 'http';
@@ -34,7 +39,7 @@ export class Main {
                 sameSite: true
             }
         }));
-
+        
         this.app.use(express.static(path.join(global.paths.root, 'public')));
 
         app.use(
@@ -43,6 +48,30 @@ export class Main {
             swaggerUi.setup(swaggerJson)
         );
 
+        app.use(function errorHandler(
+            err: unknown,
+            req: ExRequest,
+            res: ExResponse,
+            next: NextFunction
+          ): ExResponse | void {
+            if (err instanceof ValidateError) {
+              console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
+              return res.status(422).json({
+                message: "Validation Failed",
+                details: err?.fields,
+              });
+            }
+            if (err instanceof Error) {
+              return res.status(500).json({
+                message: "Internal Server Error",
+              });
+            }
+            console.log('ERROR', err);
+            
+          
+            next();
+          });
+            
         RegisterRoutes(this.app);
 
         this.httpServer = http.createServer(this.app);

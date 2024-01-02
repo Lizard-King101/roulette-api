@@ -26,6 +26,9 @@
   "exclude": [
     "ecosystem.config.js",
     "src/controller/**/*.*",
-    "build/**"
+    "build/**",
+    "fern",
+    "generated/**",
+    "new-package.ts"
   ]
 }

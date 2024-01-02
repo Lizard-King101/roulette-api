@@ -30,7 +30,12 @@ Thumbs.db
 # Build Files #
 ###############
 build/**
+generated/**
+fern/**
 
+# TSOA Routes #
+###############
+src/routes/**
 
 # Dependancies #
 ################
