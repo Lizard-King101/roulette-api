@@ -17,6 +17,11 @@ import path from 'path';
 import { Server } from 'node:http';
 import { RegisterRoutes } from '../routes/routes';
 import * as swaggerJson from '../routes/swagger.json';
+import { NocoDB } from "./noco";
+import { PaymentRow } from "../controllers/pi/pi";
+import PiNetwork from "pi-backend";
+import { PaymentDTO } from "pi-backend/dist/types";
+import { PiService } from "../controllers/pi/piService";
 // import Routes from '../routes/routes';
 
 export class Main {
@@ -74,6 +79,19 @@ export class Main {
             
         RegisterRoutes(this.app);
 
+        let { apiKey, privateSeed } = global.config.pi;
+        let pi = new PiNetwork(apiKey, privateSeed);
+        pi.getIncompleteServerPayments().then(async (result: unknown) => {
+          let payments = (<{incomplete_server_payments: Array<PaymentDTO>}> result).incomplete_server_payments;
+          console.log('Payments:', payments);
+          for(let payment of payments) {
+            let complete = await PiService.completeServerPayment(pi, payment)
+            console.log(complete);
+            
+            // await PiService.cancelServerPayment(pi, payment);
+          }
+        })
+        
         this.httpServer = http.createServer(this.app);
         this.serverListen();
     }

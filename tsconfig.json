@@ -25,7 +25,7 @@
   },
   "exclude": [
     "ecosystem.config.js",
-    "src/controller/**/*.*",
+    "src/controllers/**/*.*",
     "build/**",
     "fern",
     "generated/**",
