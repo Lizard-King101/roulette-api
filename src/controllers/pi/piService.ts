@@ -56,9 +56,11 @@ export class PiService {
             where: `(UID,eq,${uid})`
         });
         if(Object.keys(exists).length == 0) throw Error('Account not found');
+        let newBalance = exists.Balance - amount;
+        if(newBalance < 0) throw Error('Insuficient balance');
 
-        if(exists.Balance - amount < 0) throw Error('Insuficient balance');
-
+        
+        
         let withdrawAmount = amount / 1000;
 
         let id = await this.pi.createPayment({
@@ -76,7 +78,15 @@ export class PiService {
         if(!id) return;
         console.log('Payment created', id);
         
-        return await this.pi.submitPayment(id)
+        let txid = await this.pi.submitPayment(id);
+
+        console.log('New Balance', newBalance);
+        await this.db.dbTableRow.update('noco', 'pi-roulette', 'accounts', exists.Id, {
+            Balance: newBalance
+        });
+
+        let complete = await this.pi.completePayment(id, txid);
+        return complete;
     }
 
     static async completeServerPayment(pi: PiNetwork, payment: PaymentDTO) {
@@ -87,7 +97,7 @@ export class PiService {
         });
 
         if(!result) return;
-        let complete = pi.completePayment(payment.identifier, result);
+        let complete = await pi.completePayment(payment.identifier, result);
         return complete;
     }
 
@@ -96,7 +106,6 @@ export class PiService {
             console.log(error);
             
         });
-
     }
 
 

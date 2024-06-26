@@ -22,6 +22,7 @@ import { PaymentRow } from "../controllers/pi/pi";
 import PiNetwork from "pi-backend";
 import { PaymentDTO } from "pi-backend/dist/types";
 import { PiService } from "../controllers/pi/piService";
+import { SpinnerGame } from "./spinner-game";
 // import Routes from '../routes/routes';
 
 export class Main {
@@ -92,6 +93,8 @@ export class Main {
           }
         })
         
+        new SpinnerGame()
+
         this.httpServer = http.createServer(this.app);
         this.serverListen();
     }
